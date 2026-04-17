@@ -301,25 +301,123 @@ function aiStyleSelector() {
 }
 
 function helpMessage() {
-  return textMessage(
-    '🐾 寵物管理Bot 指令說明\n\n' +
-    '【寵物管理】\n' +
-    '• 我的寵物 - 查看所有寵物\n' +
-    '• 新增寵物 - 新增寵物資料\n\n' +
-    '【共養任務】\n' +
-    '• 共養任務 - 查看任務列表\n' +
-    '• 完成任務 - 完成最新待辦任務\n' +
-    '• 最近共養任務 - 顯示最近3筆任務\n\n' +
-    '【AI 虛擬寵物】\n' +
-    '• 生成虛擬寵物 - 上傳照片生成AI圖像\n' +
-    '• 我的虛擬寵物 - 查看虛擬寵物庫\n\n' +
-    '【提醒功能】\n' +
-    '• 提醒設定 - 查看提醒\n\n' +
-    '【共養群組】\n' +
-    '• 共養群組 - 查看群組\n' +
-    '• 加入群組 - 輸入邀請碼加入\n\n' +
-    '• 取消 - 取消目前操作'
-  );
+  const section = (emoji, title, items) => ({
+    type: 'box',
+    layout: 'vertical',
+    margin: 'lg',
+    spacing: 'xs',
+    contents: [
+      {
+        type: 'box',
+        layout: 'horizontal',
+        contents: [
+          { type: 'text', text: emoji, size: 'sm', flex: 0 },
+          { type: 'text', text: ` ${title}`, weight: 'bold', size: 'sm', color: '#FF6B6B', flex: 1 },
+        ],
+      },
+      ...items.map(([cmd, desc]) => ({
+        type: 'box',
+        layout: 'horizontal',
+        paddingStart: 'md',
+        contents: [
+          { type: 'text', text: `• ${cmd}`, size: 'xs', color: '#333333', flex: 2, wrap: true },
+          { type: 'text', text: desc, size: 'xs', color: '#888888', flex: 3, wrap: true },
+        ],
+      })),
+    ],
+  });
+
+  return {
+    type: 'flex',
+    altText: '🐾 寵物管理Bot 使用說明',
+    contents: {
+      type: 'bubble',
+      header: {
+        type: 'box',
+        layout: 'vertical',
+        backgroundColor: '#FF6B6B',
+        paddingAll: 'md',
+        contents: [
+          { type: 'text', text: '🐾 寵物管理 Bot', weight: 'bold', size: 'xl', color: '#FFFFFF', align: 'center' },
+          { type: 'text', text: '使用說明 & 指令列表', size: 'sm', color: '#FFE0E0', align: 'center', margin: 'xs' },
+        ],
+      },
+      body: {
+        type: 'box',
+        layout: 'vertical',
+        paddingAll: 'lg',
+        contents: [
+          section('🐾', '寵物管理', [
+            ['我的寵物', '查看所有寵物列表'],
+            ['新增寵物', '依步驟新增寵物資料'],
+            ['疫苗記錄', '查看最近疫苗/看診紀錄'],
+          ]),
+          { type: 'separator', margin: 'lg' },
+          section('📋', '共養任務', [
+            ['共養任務', '查看全部任務列表'],
+            ['完成任務', '標記最新待辦任務為完成'],
+            ['最近共養任務', '顯示最近 3 筆任務'],
+          ]),
+          { type: 'separator', margin: 'lg' },
+          section('🤖', 'AI 虛擬寵物', [
+            ['生成虛擬寵物', '選擇風格後上傳照片生成'],
+            ['我的虛擬寵物', '查看虛擬寵物庫'],
+          ]),
+          { type: 'separator', margin: 'lg' },
+          section('🔔', '提醒功能', [
+            ['提醒設定', '查看所有提醒設定'],
+          ]),
+          { type: 'separator', margin: 'lg' },
+          section('👥', '共養群組', [
+            ['共養群組', '查看我的群組'],
+            ['建立共養群組', '建立新群組並取得邀請碼'],
+            ['加入群組', '輸入邀請碼加入群組'],
+          ]),
+          { type: 'separator', margin: 'lg' },
+          {
+            type: 'box',
+            layout: 'vertical',
+            margin: 'lg',
+            contents: [
+              { type: 'text', text: '💡 小提示', weight: 'bold', size: 'xs', color: '#888888' },
+              { type: 'text', text: '輸入「取消」可隨時中斷目前操作', size: 'xs', color: '#AAAAAA', wrap: true, margin: 'xs' },
+              { type: 'text', text: '輸入「說明」或「help」可再次查看此說明', size: 'xs', color: '#AAAAAA', wrap: true, margin: 'xs' },
+            ],
+          },
+        ],
+      },
+      footer: {
+        type: 'box',
+        layout: 'horizontal',
+        spacing: 'sm',
+        paddingAll: 'md',
+        contents: [
+          {
+            type: 'button',
+            action: { type: 'message', label: '🐾 我的寵物', text: '我的寵物' },
+            style: 'primary',
+            color: '#FF6B6B',
+            flex: 1,
+            height: 'sm',
+          },
+          {
+            type: 'button',
+            action: { type: 'message', label: '📋 任務', text: '共養任務' },
+            style: 'secondary',
+            flex: 1,
+            height: 'sm',
+          },
+          {
+            type: 'button',
+            action: { type: 'message', label: '🤖 AI寵物', text: '生成虛擬寵物' },
+            style: 'secondary',
+            flex: 1,
+            height: 'sm',
+          },
+        ],
+      },
+    },
+  };
 }
 
 module.exports = {
