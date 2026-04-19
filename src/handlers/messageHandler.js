@@ -160,7 +160,7 @@ async function handleMessage(client, event) {
     return;
   }
 
-  if (['說明', 'help', '功能', '指令'].includes(text.toLowerCase())) {
+  if (['說明', 'help', '功能', '指令', '操作說明', '使用說明'].includes(text.toLowerCase())) {
     await reply(client, event, [helpMessage()]);
     return;
   }
