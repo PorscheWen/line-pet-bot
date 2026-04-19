@@ -71,7 +71,7 @@ function buildReminderMessage(reminder) {
 
 async function sendPushNotification(client, lineUserId, message) {
   try {
-    await client.pushMessage({ to: lineUserId, messages: [{ type: 'text', text: message }] });
+    await client.pushMessage(lineUserId, [{ type: 'text', text: message }]);
     return true;
   } catch (err) {
     console.error('推播失敗:', lineUserId, err.message);

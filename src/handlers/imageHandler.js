@@ -51,26 +51,20 @@ async function handleImage(client, event) {
 
       clearUserState(lineUserId);
 
-      await client.pushMessage({
-        to: lineUserId,
-        messages: [
-          {
-            type: 'text',
-            text: `✨ 虛擬寵物生成完成！\n\n風格：${style}\n\n${description}`,
-          },
-          quickReply('您可以繼續操作：', [
-            { label: '🔄 換個風格', text: '生成虛擬寵物' },
-            { label: '📚 我的虛擬寵物', text: '我的虛擬寵物' },
-            { label: '🐾 我的寵物', text: '我的寵物' },
-          ]),
-        ],
-      });
+      await client.pushMessage(lineUserId, [
+        {
+          type: 'text',
+          text: `✨ 虛擬寵物生成完成！\n\n風格：${style}\n\n${description}`,
+        },
+        quickReply('您可以繼續操作：', [
+          { label: '🔄 換個風格', text: '生成虛擬寵物' },
+          { label: '📚 我的虛擬寵物', text: '我的虛擬寵物' },
+          { label: '🐾 我的寵物', text: '我的寵物' },
+        ]),
+      ]);
     } catch (err) {
       clearUserState(lineUserId);
-      await client.pushMessage({
-        to: lineUserId,
-        messages: [textMessage(`生成失敗：${err.message}\n請重試或聯繫管理員`)],
-      });
+      await client.pushMessage(lineUserId, [textMessage(`生成失敗：${err.message}\n請重試或聯繫管理員`)]);
     }
     return;
   }
