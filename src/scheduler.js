@@ -1,4 +1,5 @@
 const cron = require('node-cron');
+const https = require('https');
 const {
   getActiveRemindersForTime,
   markReminderSent,
@@ -41,6 +42,13 @@ function startScheduler(client) {
       }
     }
   });
+
+  // 每 10 分鐘 ping 自己，防止 Render 免費版休眠
+  if (process.env.NODE_ENV === 'production') {
+    cron.schedule('*/10 * * * *', () => {
+      https.get('https://line-pet-bot.onrender.com/health', () => {}).on('error', () => {});
+    });
+  }
 
   console.log('排程器已啟動');
 }
