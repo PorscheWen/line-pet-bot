@@ -13,10 +13,8 @@
     "@line/bot-sdk": "^9.3.0",
     "axios": "^1.7.0",
     "better-sqlite3": "^12.9.0",
-    "canvas": "^3.2.3",
     "dotenv": "^16.4.0",
     "express": "^4.19.0",
-    "jimp": "^1.6.1",
     "node-cron": "^3.0.3",
     "uuid": "^10.0.0"
   },

@@ -1,6 +1,11 @@
 require('dotenv').config();
 const { Client } = require('@line/bot-sdk');
-const { createCanvas } = require('canvas');
+
+// canvas 只在本地執行 setup 時使用，Render 伺服器不需要
+let createCanvas;
+try { createCanvas = require('canvas').createCanvas; } catch {
+  createCanvas = null;
+}
 
 const client = new Client({
   channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
@@ -22,6 +27,7 @@ const CELLS = [
 ];
 
 function generateRichMenuImage() {
+  if (!createCanvas) throw new Error('請先執行 npm install canvas 再執行此腳本');
   const canvas = createCanvas(W, H);
   const ctx = canvas.getContext('2d');
 
