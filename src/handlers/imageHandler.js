@@ -18,10 +18,7 @@ async function handleImage(client, event) {
     const buffer = Buffer.concat(chunks);
     imageBase64 = buffer.toString('base64');
   } catch (err) {
-    await client.replyMessage({
-      replyToken: event.replyToken,
-      messages: [textMessage('圖片讀取失敗，請重試 😿')],
-    });
+    await client.replyMessage(event.replyToken, [textMessage('圖片讀取失敗，請重試 😿')]);
     return;
   }
 
@@ -32,26 +29,20 @@ async function handleImage(client, event) {
     addPetPhoto(petId, photoUrl);
     clearUserState(lineUserId);
 
-    await client.replyMessage({
-      replyToken: event.replyToken,
-      messages: [
-        textMessage('✅ 寵物照片已儲存！'),
-        quickReply('接下來要做什麼？', [
-          { label: '🐾 查看寵物', text: '我的寵物' },
-          { label: '📋 共養任務', text: '共養任務' },
-          { label: '🤖 AI虛擬寵物', text: '生成虛擬寵物' },
-        ]),
-      ],
-    });
+    await client.replyMessage(event.replyToken, [
+      textMessage('✅ 寵物照片已儲存！'),
+      quickReply('接下來要做什麼？', [
+        { label: '🐾 查看寵物', text: '我的寵物' },
+        { label: '📋 共養任務', text: '共養任務' },
+        { label: '🤖 AI虛擬寵物', text: '生成虛擬寵物' },
+      ]),
+    ]);
     return;
   }
 
   if (state === 'GENERATING_AI_PET') {
     const style = context.style || 'Q版';
-    await client.replyMessage({
-      replyToken: event.replyToken,
-      messages: [textMessage(`🤖 正在以「${style}」風格分析您的寵物，請稍候...`)],
-    });
+    await client.replyMessage(event.replyToken, [textMessage(`🤖 正在以「${style}」風格分析您的寵物，請稍候...`)]);
 
     try {
       const description = await generateVirtualPetDescription(imageBase64, style);
@@ -85,15 +76,12 @@ async function handleImage(client, event) {
   }
 
   // 未知狀態下收到圖片 → 詢問用途
-  await client.replyMessage({
-    replyToken: event.replyToken,
-    messages: [
-      quickReply('收到您的圖片！想用來做什麼？', [
-        { label: '🤖 生成虛擬寵物', text: '生成虛擬寵物' },
-        { label: '🐾 設為寵物照片', text: '我的寵物' },
-      ]),
-    ],
-  });
+  await client.replyMessage(event.replyToken, [
+    quickReply('收到您的圖片！想用來做什麼？', [
+      { label: '🤖 生成虛擬寵物', text: '生成虛擬寵物' },
+      { label: '🐾 設為寵物照片', text: '我的寵物' },
+    ]),
+  ]);
 }
 
 module.exports = { handleImage };

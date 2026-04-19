@@ -13,10 +13,7 @@ async function handleFollow(client, event) {
     pictureUrl: profile.pictureUrl,
   });
 
-  await client.replyMessage({
-    replyToken: event.replyToken,
-    messages: [welcomeMessage(profile.displayName || '朋友')],
-  });
+  await client.replyMessage(event.replyToken, [welcomeMessage(profile.displayName || '朋友')]);
 }
 
 async function handleUnfollow(event) {

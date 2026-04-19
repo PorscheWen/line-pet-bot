@@ -180,7 +180,7 @@ async function handlePostback(client, event) {
 }
 
 async function reply(client, event, messages) {
-  await client.replyMessage({ replyToken: event.replyToken, messages });
+  await client.replyMessage(event.replyToken, messages);
 }
 
 module.exports = { handlePostback };

@@ -26,10 +26,7 @@ async function handleEvent(event, client, addLog = console.log) {
     addLog('error', `[錯誤] ${err.message} | stack: ${err.stack?.split('\n')[1]?.trim()}`);
     if (event.replyToken) {
       try {
-        await client.replyMessage({
-          replyToken: event.replyToken,
-          messages: [{ type: 'text', text: `發生錯誤：${err.message}` }],
-        });
+        await client.replyMessage(event.replyToken, [{ type: 'text', text: `發生錯誤：${err.message}` }]);
       } catch (replyErr) {
         addLog('error', `[Reply失敗] ${replyErr.message}`);
       }
