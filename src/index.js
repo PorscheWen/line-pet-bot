@@ -19,7 +19,10 @@ app.get('/health', (req, res) => res.status(200).json({ status: 'ok', timestamp:
 app.post('/webhook', middleware(lineConfig), async (req, res) => {
   res.sendStatus(200);
   const events = req.body.events;
-  await Promise.all(events.map(event => handleEvent(event, client)));
+  console.log(`[Webhook] 收到 ${events.length} 個事件`);
+  await Promise.all(events.map(event => handleEvent(event, client))).catch(err =>
+    console.error('[Webhook] 處理失敗:', err.message)
+  );
 });
 
 const PORT = process.env.PORT || 3000;
