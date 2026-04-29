@@ -1,9 +1,9 @@
+'use strict';
+
 require('dotenv').config();
 const express = require('express');
 const { middleware, Client } = require('@line/bot-sdk');
 const { handleEvent } = require('./lineBot');
-const { initDb } = require('./db');
-const { startScheduler } = require('./scheduler');
 
 const lineConfig = {
   channelSecret: process.env.LINE_CHANNEL_SECRET,
@@ -13,7 +13,6 @@ const lineConfig = {
 const client = new Client(lineConfig);
 const app = express();
 
-// 記憶體日誌（最近 50 筆）
 const recentLogs = [];
 function addLog(level, msg) {
   const entry = { time: new Date().toISOString(), level, msg };
@@ -22,7 +21,7 @@ function addLog(level, msg) {
   console[level === 'error' ? 'error' : 'log'](entry.time, msg);
 }
 
-app.get('/', (req, res) => res.send('🐾 Line Pet Bot is running!'));
+app.get('/', (req, res) => res.send('🧠 Elder Training Bot is running!'));
 app.get('/health', (req, res) => res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() }));
 app.get('/logs', (req, res) => res.json(recentLogs));
 
@@ -36,10 +35,6 @@ app.post('/webhook', middleware(lineConfig), async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-
-initDb();
-startScheduler(client);
-
 app.listen(PORT, () => {
-  addLog('info', `🐾 Line Pet Bot 啟動，port: ${PORT}`);
+  addLog('info', `🧠 Elder Training Bot 啟動，port: ${PORT}`);
 });
