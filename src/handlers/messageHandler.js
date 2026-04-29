@@ -8,7 +8,7 @@ const { getRemindersByUser, reminderTypeMap } = require('../services/notificatio
 const { getVirtualPetsByUser, styleLabels } = require('../services/aiService');
 const {
   textMessage, quickReply, welcomeMessage,
-  petListMessage, petDetailMessage, taskListMessage, aiStyleSelector, helpMessage,
+  petListMessage, petDetailMessage, taskListMessage, aiStyleSelector, helpMessage, memoryGameMessage,
 } = require('../utils/messages');
 
 async function handleMessage(client, event) {
@@ -165,6 +165,11 @@ async function handleMessage(client, event) {
     return;
   }
 
+  if (['記憶訓練', '腦力訓練', '記憶遊戲', '翻牌遊戲', '遊戲'].includes(text)) {
+    await reply(client, event, [memoryGameMessage()]);
+    return;
+  }
+
   // 最近疫苗
   if (['最近疫苗', '疫苗記錄', '疫苗'].includes(text)) {
     const { db } = require('../db');
@@ -194,6 +199,7 @@ async function handleMessage(client, event) {
     quickReply('不確定您的意思，請選擇：', [
       { label: '🐾 我的寵物', text: '我的寵物' },
       { label: '📋 共養任務', text: '共養任務' },
+      { label: '🧠 記憶訓練', text: '記憶訓練' },
       { label: '🤖 AI虛擬寵物', text: '生成虛擬寵物' },
       { label: '❓ 說明', text: '說明' },
     ]),
